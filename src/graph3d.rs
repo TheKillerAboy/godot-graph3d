@@ -35,7 +35,7 @@ impl GraphMeshPoints {
             out = out * -1.0;
         }
 
-        return out;
+        return out.normalized();
     }
 
     pub fn from_graph_points(graph_points: &GraphPoints, render_bottom:bool) -> Self{

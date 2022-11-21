@@ -35,13 +35,12 @@ render_target_update_mode = 3
 shadow_atlas_size = 1280
 
 [node name="Camera" type="Camera" parent="Background/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 40, -40 )
+transform = Transform( -1, 8.74228e-08, 0, -6.18172e-08, -0.707107, 0.707107, 6.18172e-08, 0.707107, 0.707107, 0, 40, 40 )
 near = 0.01
 far = 1076.9
 script = ExtResource( 3 )
 speed = 10
-max_zoom = Vector3( 0, 1, -1 )
-min_zoom = Vector3( 0, 150, -150 )
+min_zoom = Vector3( 0, 150, 150 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Background"]
 transform = Transform( -0.409799, 0.184531, 0.893316, 0.0171892, -0.977588, 0.209824, 0.912014, 0.101341, 0.397443, 43.9599, -0.989164, 1.16315 )
