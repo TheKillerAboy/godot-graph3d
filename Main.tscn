@@ -239,7 +239,7 @@ margin_left = 91.0
 margin_right = 341.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 250, 0 )
-text = "200"
+text = "500"
 
 [node name="MarginContainer8" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
 margin_top = 288.0
