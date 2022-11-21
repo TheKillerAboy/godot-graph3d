@@ -88,7 +88,7 @@ margin_left = 80.0
 margin_right = 330.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 250, 0 )
-text = "sin(x*y)"
+text = "cos(x)*sin(y)"
 
 [node name="MarginContainer2" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
 margin_top = 28.0

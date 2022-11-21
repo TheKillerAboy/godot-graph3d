@@ -23,9 +23,8 @@ impl GraphPoints{
         return vec![self.x[i],self.y[i],self.z[i]];
     }
 
-    pub fn get_index_multi(&self, i: usize, j: usize) -> Vec<f32>{
-        let n = j*self.axis_segments + i;
-        return self.get_index(n);
+    pub fn multi_index_to_single(&self, i: usize, j: usize)->usize{
+        j*self.axis_segments + i
     }
 }
 

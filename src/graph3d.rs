@@ -1,6 +1,6 @@
-use std::ops::Mul;
+use std::ops::Add;
 
-use gdnative::{prelude::*, api::{MeshInstance, ArrayMesh, Mesh, ResourceSaver}, sys::godot_pool_real_array};
+use gdnative::{prelude::*, api::{MeshInstance, ArrayMesh, Mesh}};
 
 use crate::execute::{GraphPoints,execute_points};
 use crate::lexer::lexer;
@@ -21,29 +21,14 @@ impl GraphMeshPoints {
         }
     }
 
-    fn calc_normal(p1: Vector3, p2: Vector3, p3: Vector3, up: bool) -> Vector3 {
-        let u = p1 - p2;
-        let v = p3 - p1;
-
-        let mut out = Vector3{
-            x: u.y*u.z - u.z*v.y,
-            y: u.z*v.x - u.x*v.z,
-            z: u.x*v.y - u.y*v.x
-        };
-
-        if(up && out.z < 0.0) || (!up && out.z > 0.0){
-            out = out * -1.0;
-        }
-
-        return out.normalized();
-    }
-
     pub fn from_graph_points(graph_points: &GraphPoints, render_bottom:bool) -> Self{
         let mut vertices = Vector3Array::new();
         let mut indices = Int32Array::new();
         let mut normals = Vector3Array::new();
 
         let points_len = graph_points.x.len();
+
+        let mut tmp_normals: Vec<Vector3> = vec![Vector3::new(0.0,0.0,0.0); points_len];
 
         for i in 0..graph_points.axis_segments-1 {
             for j in 0..graph_points.axis_segments-1 {
@@ -76,33 +61,28 @@ impl GraphMeshPoints {
         }
 
         // top
-        for i in 0..graph_points.axis_segments {
-            for j in 0..graph_points.axis_segments {
-                let p1 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i,j));
-                vertices.push(p1);
+        for i in 0..graph_points.axis_segments-1 {
+            for j in 0..graph_points.axis_segments-1 {
+                let ix1 = graph_points.multi_index_to_single(i, j);
+                let ix2 = graph_points.multi_index_to_single(i+1, j);
+                let ix3 = graph_points.multi_index_to_single(i, j+1);
 
-                let p2: Vector3;
-                let p3: Vector3;
+                let p1 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index(ix1));
+                let p2 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index(ix2));
+                let p3 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index(ix3));
 
-                if i < graph_points.axis_segments-1 && j < graph_points.axis_segments-1{
-                    p2 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i+1,j));
-                    p3 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i,j+1));
-                }
-                else if i == 0 && j == graph_points.axis_segments-1{
-                    p2 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i+1,j));
-                    p3 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i,j-1));
-                }
-                else if i == graph_points.axis_segments-1 && j == 0{
-                    p2 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i-1,j));
-                    p3 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i,j+1));
-                }
-                else{
-                    p2 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i-1,j));
-                    p3 = GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index_multi(i,j-1));
-                }
+                let pn = (p2-p3).cross(p1-p2).normalized();
 
-                normals.push(GraphMeshPoints::calc_normal(p1,p2,p3,true));
+                tmp_normals[ix1] = tmp_normals[ix1].add(pn);
+                tmp_normals[ix2] = tmp_normals[ix2].add(pn);
+                tmp_normals[ix3] = tmp_normals[ix3].add(pn);
             }
+        }
+
+        for i in 0..points_len{
+            tmp_normals[i] = tmp_normals[i].normalized();
+            normals.push(tmp_normals[i]);
+            vertices.push(GraphMeshPoints::_rust_vec_to_godot_vec(&graph_points.get_index(i)));
         }
 
         // bottom

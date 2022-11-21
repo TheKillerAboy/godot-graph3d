@@ -63,13 +63,13 @@ fn parse_series(lexer_stack: &mut LexerStack, lhs: Box<ASTNode>) -> Option<Box<A
 fn parse_primary(lexer_stack: &mut LexerStack) -> Option<Box<ASTNode>>{
     match lexer_stack.pop_front(){
         Some((token_type, token_value)) =>{
-            match(token_type){
+            match token_type {
                 TokenType::IDENT => {
                     if token_value == Some("x".to_string()) || token_value == Some("y".to_string()){
                         return Some(Box::<ASTNode>::new(ASTNode::Variable(token_value.unwrap())));
                     }
                     match lexer_stack.front(){
-                        Some((n_token_type, n_token_value)) => {
+                        Some((n_token_type, _n_token_value)) => {
                             if *n_token_type == TokenType::OBRAC{
                                 lexer_stack.pop_front();
                                 let mut out: Option<Box<ASTNode>> = None;
@@ -108,7 +108,7 @@ fn parse_expression(lexer_stack: &mut LexerStack, unary_complete: bool) -> Optio
     }
     
     match lexer_stack.front(){
-        Some((token_type, token_value)) =>{
+        Some((token_type, _token_value)) =>{
             if *token_type == TokenType::OBRAC{
                 lexer_stack.pop_front();
                 expr = parse_expression(lexer_stack, false);
