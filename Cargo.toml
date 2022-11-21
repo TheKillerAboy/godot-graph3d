@@ -1,0 +1,10 @@
+[package]
+name = "graph3d"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gdnative = "0.11"
+
+[lib]
+crate-type = ["cdylib"]

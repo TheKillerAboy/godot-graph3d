@@ -1,0 +1,301 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/RenderBtn.gd" type="Script" id=1]
+[ext_resource path="res://scripts/GraphController.gd" type="Script" id=2]
+[ext_resource path="res://scripts/CameraController.gd" type="Script" id=3]
+[ext_resource path="res://scripts/SaveBtn.gd" type="Script" id=4]
+[ext_resource path="res://data/default_graph.tres" type="ArrayMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.580392, 0.101961, 0.101961, 1 )
+uv1_triplanar = true
+uv1_triplanar_sharpness = 0.450625
+uv2_triplanar = true
+uv2_triplanar_sharpness = 0.307786
+
+[node name="StartMenu" type="CanvasLayer"]
+
+[node name="Background" type="Spatial" parent="."]
+
+[node name="Graph" type="MeshInstance" parent="Background"]
+material_override = SubResource( 2 )
+mesh = ExtResource( 5 )
+script = ExtResource( 2 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Viewport" type="Viewport" parent="Background/ViewportContainer"]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+debanding = true
+hdr = false
+render_target_update_mode = 3
+shadow_atlas_size = 1280
+
+[node name="Camera" type="Camera" parent="Background/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 40, -40 )
+near = 0.01
+far = 1076.9
+script = ExtResource( 3 )
+speed = 10
+max_zoom = Vector3( 0, 1, -1 )
+min_zoom = Vector3( 0, 150, -150 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Background"]
+transform = Transform( -0.409799, 0.184531, 0.893316, 0.0171892, -0.977588, 0.209824, 0.912014, 0.101341, 0.397443, 43.9599, -0.989164, 1.16315 )
+light_energy = 2.809
+light_indirect_energy = 0.0
+shadow_enabled = true
+directional_shadow_bias_split_scale = 0.314
+directional_shadow_depth_range = 1
+directional_shadow_max_distance = 450.6
+
+[node name="Menu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_top = 80
+custom_constants/margin_left = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/MarginContainer"]
+margin_left = 60.0
+margin_top = 80.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="FormulaHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_right = 964.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/FormulaHBox"]
+margin_top = 5.0
+margin_right = 52.0
+margin_bottom = 19.0
+text = "Formula"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/FormulaHBox"]
+margin_left = 56.0
+margin_right = 76.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="FormulaEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/FormulaHBox"]
+margin_left = 80.0
+margin_right = 330.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "sin(x*y)"
+
+[node name="MarginContainer2" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 964.0
+margin_bottom = 48.0
+custom_constants/margin_top = 20
+
+[node name="XMinHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 52.0
+margin_right = 964.0
+margin_bottom = 76.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/XMinHBox"]
+margin_top = 5.0
+margin_right = 36.0
+margin_bottom = 19.0
+text = "X Min"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/XMinHBox"]
+margin_left = 40.0
+margin_right = 60.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="XMinEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/XMinHBox"]
+margin_left = 64.0
+margin_right = 314.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "-10"
+
+[node name="MarginContainer3" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 80.0
+margin_right = 964.0
+margin_bottom = 100.0
+custom_constants/margin_top = 20
+
+[node name="XMaxHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 104.0
+margin_right = 964.0
+margin_bottom = 128.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/XMaxHBox"]
+margin_top = 5.0
+margin_right = 38.0
+margin_bottom = 19.0
+text = "X Max"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/XMaxHBox"]
+margin_left = 42.0
+margin_right = 62.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="XMaxEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/XMaxHBox"]
+margin_left = 66.0
+margin_right = 316.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "10"
+
+[node name="MarginContainer4" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 964.0
+margin_bottom = 152.0
+custom_constants/margin_top = 20
+
+[node name="YMinHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 156.0
+margin_right = 964.0
+margin_bottom = 180.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/YMinHBox"]
+margin_top = 5.0
+margin_right = 35.0
+margin_bottom = 19.0
+text = "Y Min"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/YMinHBox"]
+margin_left = 39.0
+margin_right = 59.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="YMinEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/YMinHBox"]
+margin_left = 63.0
+margin_right = 313.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "-10"
+
+[node name="MarginContainer5" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 184.0
+margin_right = 964.0
+margin_bottom = 204.0
+custom_constants/margin_top = 20
+
+[node name="YMaxHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 208.0
+margin_right = 964.0
+margin_bottom = 232.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/YMaxHBox"]
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 19.0
+text = "Y Max"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/YMaxHBox"]
+margin_left = 41.0
+margin_right = 61.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="YMaxEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/YMaxHBox"]
+margin_left = 65.0
+margin_right = 315.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "10"
+
+[node name="MarginContainer6" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 236.0
+margin_right = 964.0
+margin_bottom = 256.0
+custom_constants/margin_top = 20
+
+[node name="SegmentsHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 260.0
+margin_right = 964.0
+margin_bottom = 284.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/SegmentsHBox"]
+margin_top = 5.0
+margin_right = 63.0
+margin_bottom = 19.0
+text = "Segments"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/SegmentsHBox"]
+margin_left = 67.0
+margin_right = 87.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="SegmentsEdt" type="LineEdit" parent="Menu/MarginContainer/VBoxContainer/SegmentsHBox"]
+margin_left = 91.0
+margin_right = 341.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 250, 0 )
+text = "200"
+
+[node name="MarginContainer8" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 288.0
+margin_right = 964.0
+margin_bottom = 308.0
+custom_constants/margin_top = 20
+
+[node name="RenBotHBox" type="HBoxContainer" parent="Menu/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 312.0
+margin_right = 964.0
+margin_bottom = 336.0
+
+[node name="Label" type="Label" parent="Menu/MarginContainer/VBoxContainer/RenBotHBox"]
+margin_top = 5.0
+margin_right = 97.0
+margin_bottom = 19.0
+text = "Render Bottom"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer/RenBotHBox"]
+margin_left = 101.0
+margin_right = 121.0
+margin_bottom = 24.0
+custom_constants/margin_left = 20
+
+[node name="RenBotCheck" type="CheckBox" parent="Menu/MarginContainer/VBoxContainer/RenBotHBox"]
+margin_left = 125.0
+margin_right = 149.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="MarginContainer9" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 312.0
+margin_right = 964.0
+margin_bottom = 332.0
+custom_constants/margin_top = 20
+
+[node name="RenderBtn" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 312.0
+margin_right = 57.0
+margin_bottom = 332.0
+size_flags_horizontal = 0
+text = "Render"
+script = ExtResource( 1 )
+
+[node name="MarginContainer7" type="MarginContainer" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 336.0
+margin_right = 964.0
+margin_bottom = 356.0
+custom_constants/margin_top = 20
+
+[node name="SaveBtn" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
+margin_top = 360.0
+margin_right = 109.0
+margin_bottom = 380.0
+size_flags_horizontal = 0
+text = "Save as Default"
+script = ExtResource( 4 )
