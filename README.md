@@ -2,4 +2,4 @@
 
 ## Preview
 
-![Screenshot from 2022-11-21 04-15-25](https://user-images.githubusercontent.com/36484821/202946554-3aa1946f-1714-462c-b314-64a9bff8188c.png)
+![Screenshot from 2022-11-22 01-52-52](https://user-images.githubusercontent.com/36484821/203181413-bcea4246-b66c-47b2-ad5c-9f4ce4060e76.png)
